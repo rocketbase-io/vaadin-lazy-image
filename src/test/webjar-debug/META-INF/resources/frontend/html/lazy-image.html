@@ -1,0 +1,88 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="vaadin-lazy-image">
+
+    <template>
+        <style>
+            :host {
+                min-height: 1000px;
+            }
+        </style>
+        <img id="[[id]]"
+             src="[[src]]"
+             sizes="[[sizes]]"
+             srcset="[[srcset]]"
+             on-load="_imageLoaded"
+             on-click="clickListener"/>
+
+    </template>
+
+    <script>
+        class VaadinLazyImage extends Polymer.Element {
+
+
+            static get properties() {
+                return {
+                    class: {
+                        reflectToAttribute: true,
+                        value: 'lazyload',
+                        observer: '_classChanged'
+                    },
+                    src: {
+                        type: String,
+                        reflectToAttribute: true,
+                        // observer: '_dataSrcChanged'
+                    },
+                    sizes: {
+                        type: String,
+                        reflectToAttribute: true,
+                        // observer: '_dataSizesChanged'
+                    },
+                    srcset: {
+                        type: String,
+                        reflectToAttribute: true,
+                        // observer: '_dataSrcset',
+                    },
+                    loaded: {
+                        type: Boolean,
+                        value: false
+                    },
+                };
+            }
+
+            static get is() {
+                return 'vaadin-lazy-image';
+            }
+
+            constructor() {
+                super();
+            }
+
+            _imgChanged(oldVal, newVal) {
+                //this.placeholder = newVal.placeholder
+            }
+
+            _classChanged(oldVal, newVal) {
+                //if (this.loaded) return
+
+                //this.loaded = true
+                if (this.img.placeholder === true && newVal === 'lazyloading lazyloaded') {
+                    this.$server.placeholderLoaded()
+                }
+
+            }
+
+            _imageLoaded(event) {
+                if (this.img.id === "placeholder") {
+                    console.log("Event", this.img)
+                    this.loaded = true
+                    this.$server.imgLoaded()
+                }
+            }
+        }
+
+        window.customElements.define(VaadinLazyImage.is, VaadinLazyImage);
+
+    </script>
+
+</dom-module>
