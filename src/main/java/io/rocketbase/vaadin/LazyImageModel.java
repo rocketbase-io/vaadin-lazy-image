@@ -5,4 +5,9 @@ import com.vaadin.flow.templatemodel.TemplateModel;
 public interface LazyImageModel extends TemplateModel {
 
     void setImg(LazyImageItem img);
+
+    String getSelectable();
+
+    void setSelectable(Boolean selectable);
+
 }

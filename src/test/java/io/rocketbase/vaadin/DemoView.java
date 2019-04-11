@@ -1,12 +1,17 @@
 package io.rocketbase.vaadin;
 
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import io.rocketbase.vaadin.List.LazyImageList;
+import io.rocketbase.vaadin.List.LazyImageListItem;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Route("")
 public class DemoView extends Div {
 
@@ -15,29 +20,40 @@ public class DemoView extends Div {
     public DemoView() {
 
         VerticalLayout lazyImageLayout = new VerticalLayout();
+        Button click = new Button("Klick mich");
+        Button click1 = new Button("disable");
+        Button click2 = new Button("getAll");
 
-//        LazyImageItem img1 = LazyImageItem.builder().dataSizes("auto").dataSrc("https://picsum.photos/1000").build();
-//        LazyImageItem img2 = LazyImageItem.builder().dataSizes("auto").dataSrc("https://picsum.photos/900").build();
-//        LazyImageItem img3 = LazyImageItem.builder().dataSizes("auto").dataSrc("https://picsum.photos/800").build();
-//
-//        LazyImage lazyImage1 = new LazyImage(img1);
-//        LazyImage lazyImage2 = new LazyImage(img2);
-//        LazyImage lazyImage3 = new LazyImage(img3);
-//        lazyImageLayout.add(lazyImage1, lazyImage2, lazyImage3);
-//
-//        add(lazyImageLayout);
+
+        LazyImage lazyImage1 = new LazyImage(LazyImageItem.builder().dataSizes("auto").dataSrc("https://picsum.photos/300").selectable(false).build());
+////        LazyImage lazyImage3 = new LazyImage(img3);
+        lazyImageLayout.add(lazyImage1);
+////
+        add(click, click1, click2);
 
 
         List<LazyImageItem> imageItemList = new ArrayList<>();
-        for (int i = 0; i <= 300; i++) {
-            imageItemList.add(LazyImageItem.builder().dataSrc("https://picsum.photos/" + ((Math.random() * 10) + 800) + "?random").build());
+        for (int i = 0; i <= 60; i++) {
+            imageItemList.add(LazyImageItem.builder().dataSrc("https://picsum.photos/" + ((Math.random() * 10) + 800) + "?random").selectable(true).build());
         }
 
-        LazyImageListItem build = LazyImageListItem.builder().lazyImageItemList(imageItemList).maxImages(3).build();
+        LazyImageListItem build = new LazyImageListItem(imageItemList, 10);
         LazyImageList list = new LazyImageList(build);
 
         add(list.getContent());
 
-//        lazyImage1.setSrc("https://picsum.photos/300?random");
+        click.addClickListener((listener) -> {
+            list.enableSelectionMode();
+        });
+
+        click1.addClickListener((listener) -> {
+            list.disableSelectionMode();
+        });
+
+        click2.addClickListener((listener) -> {
+            list.getSelectedAndDisable().forEach(item -> {
+                System.out.println(item.getId());
+            });
+        });
     }
 }

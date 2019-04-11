@@ -1,6 +1,8 @@
-package io.rocketbase.vaadin;
+package io.rocketbase.vaadin.List;
 
-import lombok.Builder;
+import io.rocketbase.vaadin.LazyImage;
+import io.rocketbase.vaadin.LazyImageItem;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,15 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class LazyImageListItem {
 
-    private int maxImages;
+    private List<LazyImage> lazyImageList;
+    private int limit;
     private List<LazyImageItem> lazyImageItemList;
 
-    public LazyImageListItem(int maxImages, List<LazyImageItem> lazyImageItemList) {
-        this.maxImages = maxImages;
+
+    public LazyImageListItem(List<LazyImageItem> lazyImageItemList, int limit) {
+        this.limit = limit;
         this.lazyImageItemList = lazyImageItemList;
 
         init();
@@ -25,32 +29,35 @@ public class LazyImageListItem {
 
     private void init() {
 
-        for (int i = maxImages + 1; i <= this.lazyImageItemList.size() - 1; i = i + maxImages + 1) {
+        for (int i = limit + 1; i <= this.lazyImageItemList.size() - 1; i = i + limit + 1) {
             this.lazyImageItemList.add(i,
                     LazyImageItem
                             .builder()
                             .dataSrc("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=")
                             .placeholder(true)
+                            .selectable(false)
                             .build()
             );
         }
 
-        /*
-        for (int j = 0; j <= this.lazyImageItemList.size() - 1; j++) {
-            this.lazyImageItemList.get(j).setId(String.valueOf(j));
-        }*/
         final Integer[] k = {0};
         this.lazyImageItemList.forEach((item) -> {
             item.setId(String.valueOf(k[0]));
             k[0]++;
+
+            if (item.getPlaceholder() == null) {
+                item.setPlaceholder(false);
+            }
+
         });
     }
 
     public List<LazyImage> convertToLazyImage() {
-        List<LazyImage> list = new ArrayList<>();
+        this.lazyImageList = new ArrayList<>();
         this.lazyImageItemList.forEach((item) -> {
-            list.add(new LazyImage(item));
+            LazyImage lazyImage = new LazyImage(item);
+            this.lazyImageList.add(lazyImage);
         });
-        return list;
+        return this.lazyImageList;
     }
 }

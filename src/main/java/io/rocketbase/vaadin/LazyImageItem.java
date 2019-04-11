@@ -15,4 +15,6 @@ public class LazyImageItem {
     private String dataSrcSet;
     private String id;
     private Boolean placeholder;
+    private String style;
+    private Boolean selectable;
 }

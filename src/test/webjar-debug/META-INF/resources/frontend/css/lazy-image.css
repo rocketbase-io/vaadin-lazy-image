@@ -1,0 +1,16 @@
+.selected:after {
+    z-index: 5;
+    background: rgba(0, 0, 0, .5);
+    border-color: rgba(0, 0, 0, .5);
+}
+
+.selectable:hover {
+    z-index: 9999 !important;
+    background: rgba(0, 0, 0, .2);
+    background-color: yellow !important;
+    /*border-color: rgba(0, 0, 0, .2);*/
+}
+
+vaadin-lazy-image {
+    z-index: 0 !important;
+}
