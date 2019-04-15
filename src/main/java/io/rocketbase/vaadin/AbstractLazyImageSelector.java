@@ -6,6 +6,7 @@ import io.rocketbase.vaadin.events.LazyImageSelectedEvent;
 import io.rocketbase.vaadin.events.LoadMoreItemsEvent;
 import lombok.Getter;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,4 +94,9 @@ public abstract class AbstractLazyImageSelector {
     }
 
     protected abstract void loadMore(LoadMoreItemsEvent event);
+
+    @PostConstruct
+    public void init() {
+        content.setWidthFull();
+    }
 }

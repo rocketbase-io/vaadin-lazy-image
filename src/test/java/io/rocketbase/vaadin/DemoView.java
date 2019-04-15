@@ -26,15 +26,16 @@ public class DemoView extends Div {
 
 
         LazyImage lazyImage1 = new LazyImage(LazyImageItem.builder().dataSizes("auto").dataSrc("https://picsum.photos/300").selectable(false).build());
-////        LazyImage lazyImage3 = new LazyImage(img3);
         lazyImageLayout.add(lazyImage1);
-////
+
         add(click, click1, click2);
 
 
         List<LazyImageItem> imageItemList = new ArrayList<>();
         for (int i = 0; i <= 60; i++) {
-            imageItemList.add(LazyImageItem.builder().dataSrc("https://picsum.photos/" + ((Math.random() * 10) + 800) + "?random").selectable(true).build());
+            LazyImageItem build = LazyImageItem.builder().dataSrc("https://picsum.photos/" + ((Math.random() * 10) + 800) + "?random").selectable(true).build();
+            imageItemList.add(build);
+
         }
 
         LazyImageListItem build = new LazyImageListItem(imageItemList, 10);

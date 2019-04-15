@@ -3,7 +3,7 @@ package io.rocketbase.vaadin;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.dependency.JavaScript;
-import com.vaadin.flow.component.polymertemplate.EventHandler;
+import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.shared.Registration;
 import io.rocketbase.vaadin.events.LazyImageClickEvent;
@@ -21,16 +21,16 @@ import java.util.UUID;
 @Slf4j
 @Tag("vaadin-lazy-image")
 @HtmlImport("frontend://html/lazy-image.html")
+@StyleSheet("frontend://css/lazy-image.css")
 @JavaScript("bower_components/lazysizes/lazysizes.js")
 public class LazyImage extends PolymerTemplate<LazyImageModel> implements HasStyle, HasSize, HasElement {
 
-    private static final PropertyDescriptor<String, String> dataSrcProperty = PropertyDescriptors.propertyWithDefault("src", "");
+    private static final PropertyDescriptor<String, String> dataSrcProperty = PropertyDescriptors.propertyWithDefault("dataSrc", "");
     private static final PropertyDescriptor<String, String> dataSizesProperts = PropertyDescriptors.propertyWithDefault("sizes", "auto");
     private static final PropertyDescriptor<String, String> dataSrcSetProperty = PropertyDescriptors.propertyWithDefault("srcset", "");
     private static final PropertyDescriptor<String, String> idProperty = PropertyDescriptors.propertyWithDefault("id", "");
     private static final PropertyDescriptor<String, String> placeholderProperty = PropertyDescriptors.propertyWithDefault("placeholder", "false");
-    //    private static final PropertyDescriptor<String, String> selectableProperty = PropertyDescriptors.attributeWithDefault("selectable", "false");
-//
+
     @Getter
     private LazyImageItem imageItem;
 
@@ -52,10 +52,25 @@ public class LazyImage extends PolymerTemplate<LazyImageModel> implements HasSty
         setSrcSet(img.getDataSrcSet());
         setID(img.getId());
 
-
-        //this.addClassName("lazyload");
+        this.addClassName("lazyload");
         this.imageItem = img;
         getModel().setImg(img);
+
+        this.getElement().addEventListener("click", listener -> {
+            if (this.hasClassName("selectable")) {
+                if (this.hasClassName("selected")) {
+                    this.removeClassName("selected");
+                    fireEvent(new LazyImageSelectedEvent(this, true, this.imageItem, SelectAction.REMOVE));
+                } else {
+                    this.addClassName("selected");
+                    fireEvent(new LazyImageSelectedEvent(this, true, this.imageItem, SelectAction.ADD));
+                }
+            } else {
+                fireEvent(new LazyImageClickEvent(this, true, this.imageItem));
+            }
+
+        });
+
     }
 
     private void setID(String id) {
@@ -70,7 +85,12 @@ public class LazyImage extends PolymerTemplate<LazyImageModel> implements HasSty
     }
 
     public void setSelectable(Boolean selectable) {
-        if (selectable != null) {
+        if (selectable != null && selectable) {
+            this.addClassName("selectable");
+            getModel().setSelectable(selectable);
+        } else if (!selectable) {
+            this.removeClassName("selectable");
+            this.removeClassName("selected");
             getModel().setSelectable(selectable);
         }
     }
@@ -93,19 +113,6 @@ public class LazyImage extends PolymerTemplate<LazyImageModel> implements HasSty
         }
     }
 
-
-    @EventHandler
-    private void clickListener() {
-        System.out.println(("KAm an"));
-        fireEvent(new LazyImageClickEvent(this, true, this.imageItem));
-    }
-
-    @ClientCallable
-    private void addSelectedImageToList() {
-        log.info("Received selectable event");
-        fireEvent(new LazyImageSelectedEvent(this, true, this.imageItem, SelectAction.ADD));
-    }
-
     @ClientCallable
     private void imgLoaded() {
         fireEvent(new LazyImageLoadedEvent(this, true, this.imageItem));
@@ -115,6 +122,7 @@ public class LazyImage extends PolymerTemplate<LazyImageModel> implements HasSty
     private void placeholderLoaded() {
         fireEvent(new LoadMoreItemsEvent(this, true, this.imageItem));
     }
+
 
     public Registration addLazyImageLoadedListener(ComponentEventListener<LazyImageLoadedEvent> listener) {
         return addListener(LazyImageLoadedEvent.class, listener);

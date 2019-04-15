@@ -2,33 +2,21 @@
 
 <dom-module id="vaadin-lazy-image">
 
-    <link rel="import" type="css" href="../css/shadow-lazy-image.css">
-
     <template>
-        <!--<style>-->
-        <!--:host {-->
-        <!--/*min-height: 800px;*/-->
-        <!--overflow: hidden;-->
-        <!--width: 100%;-->
-        <!--display: inline-block;-->
-        <!--}-->
-        <!--</style>-->
-        <div id="wrapper"
-             class="container"
-        >
+        <style>
+            :host {
+                min-height: 800px;
+                overflow: hidden;
+                display: inline-block;
+                position: relative;
+            }
+        </style>
 
-            <img id="[[id]]"
-                 src="[[src]]"
-                 srcset="[[srcset]]"
-                 on-load="_imageLoaded"
-                 on-click="clickListener"
-            />
-            <div class="overlay"
-                 on-click="_addToSelectedList"
-            ></div>
-        </div>
-
-
+        <img id="[[id]]"
+             src="[[dataSrc]]"
+             data-srcset$="[[srcset]]"
+             on-load="_imageLoaded"
+        />
     </template>
 
     <script>
@@ -39,26 +27,19 @@
                 return {
                     class: {
                         reflectToAttribute: true,
-                        //value: 'lazyload',
                         observer: '_classChanged',
-                        // value: ""
                     },
-                    src: {
+                    dataSrc: {
                         type: String,
                         reflectToAttribute: true,
-                        // value: ""
-                        // observer: '_dataSrcChanged'
                     },
                     id: {
                         type: String,
                         reflectToAttribute: true,
-                        // observer: '_dataSrcChanged'
                     },
                     srcset: {
                         type: String,
                         reflectToAttribute: true,
-                        // value: ""
-                        // observer: '_dataSrcset',
                     },
                     loaded: {
                         type: Boolean,
@@ -82,47 +63,12 @@
             }
 
 
-            _selectable(newVal, oldVal) {
-                //this.shadowRoot
-                console.log("VALLLL", newVal)
-                //let img = this.shadowRoot.getElementById(this.img.id);
-                let container = this.shadowRoot.getElementById("wrapper");
-                if (newVal != null && newVal) {
-                    if (this.img.selectable) {//img.getAttribute("selectable")) {
-                        container.classList.add("selectable")
-                    } else {
-                        container.classList.remove("selectable")
-                    }
-                } else if (newVal != null && !newVal) {
-                    container.classList.remove("selectable")
-                }
-            }
-
-
-            _imgChanged(newVal, oldVal) {
-                //this.placeholder = newVal.placeholder
-            }
-
             _classChanged(newVal, oldVal) {
                 if (typeof newVal !== 'undefined') {
                     if (this.img.placeholder === true && newVal.indexOf('lazyloading lazyloaded') !== -1) {
                         this.$server.placeholderLoaded()
                     }
                 }
-
-            }
-
-            _addToSelectedList() {
-                let container = this.shadowRoot.getElementById("wrapper");
-                console.log(container);
-
-                if (container.classList.contains("selected")) {
-                    container.classList.remove("selected")
-                } else {
-                    container.classList.add("selected")
-                    this.$server.addSelectedImageToList()
-                }
-
             }
 
             _imageLoaded(event) {
