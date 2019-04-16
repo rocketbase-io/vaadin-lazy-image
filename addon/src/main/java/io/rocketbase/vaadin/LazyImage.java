@@ -41,8 +41,13 @@ public class LazyImage extends PolymerTemplate<LazyImageModel> implements HasSty
             String id = UUID.randomUUID().toString();
             img.setId(id);
 
-            img.setPlaceholder(false);
-            setPlaceholder("false");
+            if (img.getPlaceholder() != null && img.getPlaceholder()) {
+                setPlaceholder("true");
+                this.getElement().setAttribute("placeholder", true);
+            } else {
+                img.setPlaceholder(false);
+                setPlaceholder("false");
+            }
         } else if (img.getPlaceholder()) {
             setPlaceholder("true");
             this.getElement().setAttribute("placeholder", true);

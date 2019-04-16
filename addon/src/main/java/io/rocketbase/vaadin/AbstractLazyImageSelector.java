@@ -74,12 +74,7 @@ public abstract class AbstractLazyImageSelector {
 
     private void addLoadMoreListener(LazyImage item) {
         if (item.getImageItem().getPlaceholder()) {
-            item.addLoadMoreItemsListener(new ComponentEventListener<LoadMoreItemsEvent>() {
-                @Override
-                public void onComponentEvent(LoadMoreItemsEvent loadMoreItemsEvent) {
-                    loadMore(loadMoreItemsEvent);
-                }
-            });
+            addListener(item);
         }
     }
 
@@ -93,7 +88,7 @@ public abstract class AbstractLazyImageSelector {
         }
     }
 
-    protected abstract void loadMore(LoadMoreItemsEvent event);
+    protected abstract void addListener(LazyImage item);
 
     @PostConstruct
     public void init() {

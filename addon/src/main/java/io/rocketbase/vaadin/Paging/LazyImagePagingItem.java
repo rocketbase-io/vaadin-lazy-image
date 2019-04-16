@@ -27,7 +27,7 @@ public class LazyImagePagingItem {
 
     private void init() {
 
-        this.lazyImageItemList.add(this.paging.offset + 1,
+        this.lazyImageItemList.add(this.paging.limit + 1,
                 LazyImageItem
                         .builder()
                         .dataSrc("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=")
