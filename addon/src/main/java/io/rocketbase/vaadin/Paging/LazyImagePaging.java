@@ -16,6 +16,8 @@ public class LazyImagePaging extends AbstractLazyImageSelector {
     private Div content;
 
     private List<LazyImage> lazyImageList;
+
+    @Getter
     private LazyImagePagingItem pagingItem;
 
 

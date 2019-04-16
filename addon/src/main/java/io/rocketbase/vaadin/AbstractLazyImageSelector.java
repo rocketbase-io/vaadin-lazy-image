@@ -21,14 +21,14 @@ public abstract class AbstractLazyImageSelector {
 
     private List<LazyImageItem> selectedLazyImageList;
 
-    protected void enableSelectionMode() {
+    public void enableSelectionMode() {
         this.selectedLazyImageList = new ArrayList<>();
         lazyImageList.forEach((image) -> {
             image.setSelectable(image.getImageItem().getSelectable());
         });
     }
 
-    protected void disableSelectionMode() {
+    public void disableSelectionMode() {
         lazyImageList.forEach((image) -> {
             image.setSelectable(false);
         });

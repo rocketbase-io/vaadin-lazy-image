@@ -6,8 +6,8 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import io.rocketbase.vaadin.LazyImage;
 import io.rocketbase.vaadin.LazyImageItem;
-import io.rocketbase.vaadin.Paging.LazyImagePaging;
-import io.rocketbase.vaadin.Paging.LazyImagePagingItem;
+import io.rocketbase.vaadin.List.LazyImageList;
+import io.rocketbase.vaadin.List.LazyImageListItem;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,24 +37,24 @@ public class MainView extends HorizontalLayout {
 
         }
 
-//        LazyImageListItem build = new LazyImageListItem(imageItemList, 10);
-//        LazyImageList list = new LazyImageList(build);
+        LazyImageListItem build = new LazyImageListItem(imageItemList, 10);
+        LazyImageList list = new LazyImageList(build);
 
-        LazyImagePagingItem build2 = new LazyImagePagingItem(10, 20, 5, imageItemList);
-        LazyImagePaging paging = new LazyImagePaging(build2);
+//        LazyImagePagingItem build2 = new LazyImagePagingItem(10, 20, 5, imageItemList);
+//        LazyImagePaging paging = new LazyImagePaging(build2);
 
-        add(paging.getContent());
+        add(list.getContent());
 
         click.addClickListener((listener) -> {
-            //paging.enableSelectionMode();
+            list.enableSelectionMode();
         });
 
         click1.addClickListener((listener) -> {
-            //paging.disableSelectionMode();
+            list.disableSelectionMode();
         });
 
         click2.addClickListener((listener) -> {
-            paging.getSelectedAndDisable().forEach(item -> {
+            list.getSelectedAndDisable().forEach(item -> {
                 System.out.println(item.getId());
             });
         });
