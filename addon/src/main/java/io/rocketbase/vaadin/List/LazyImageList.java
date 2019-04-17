@@ -25,7 +25,8 @@ public class LazyImageList extends AbstractLazyImageSelector {
             addListeners(item);
         });
 
-        for (int i = 0; i <= listItem.getLimit() + 1; i++) {
+
+        for (int i = 0; i <= listItem.getLimit(); i++) {
             content.add(lazyImageList.get(i));
         }
     }

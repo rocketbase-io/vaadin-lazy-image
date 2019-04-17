@@ -6,11 +6,13 @@ import com.vaadin.flow.component.dependency.JavaScript;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.shared.Registration;
+import io.rocketbase.vaadin.Paging.LazyImagePagingItem;
 import io.rocketbase.vaadin.events.LazyImageClickEvent;
 import io.rocketbase.vaadin.events.LazyImageLoadedEvent;
 import io.rocketbase.vaadin.events.LazyImageSelectedEvent;
 import io.rocketbase.vaadin.events.LoadMoreItemsEvent;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.UUID;
@@ -33,6 +35,10 @@ public class LazyImage extends PolymerTemplate<LazyImageModel> implements HasSty
 
     @Getter
     private LazyImageItem imageItem;
+
+    @Setter
+    @Getter
+    private LazyImagePagingItem.Paging paging;
 
 
     public LazyImage(LazyImageItem img) {
@@ -125,7 +131,13 @@ public class LazyImage extends PolymerTemplate<LazyImageModel> implements HasSty
 
     @ClientCallable
     private void placeholderLoaded() {
-        fireEvent(new LoadMoreItemsEvent(this, true, this.imageItem));
+        if (this.paging != null) {
+            fireEvent(new LoadMoreItemsEvent(this, true, this.imageItem, this.paging));
+
+        } else {
+            fireEvent(new LoadMoreItemsEvent(this, true, this.imageItem));
+
+        }
     }
 
 

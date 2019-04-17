@@ -27,7 +27,7 @@ public class LazyImagePagingItem {
 
     private void init() {
 
-        this.lazyImageItemList.add(this.paging.limit + 1,
+        this.lazyImageItemList.add(this.paging.limit,
                 LazyImageItem
                         .builder()
                         .dataSrc("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=")
@@ -35,12 +35,18 @@ public class LazyImagePagingItem {
                         .selectable(false)
                         .build()
         );
+
+
     }
 
     public List<LazyImage> convertToLazyImage() {
         List<LazyImage> list = new ArrayList<>();
         this.lazyImageItemList.forEach((item) -> {
-            list.add(new LazyImage(item));
+            LazyImage lazyImage = new LazyImage(item);
+            if (item.getPlaceholder() != null && item.getPlaceholder()) {
+                lazyImage.setPaging(paging);
+            }
+            list.add(lazyImage);
         });
         return list;
     }

@@ -6,14 +6,17 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import io.rocketbase.vaadin.LazyImage;
 import io.rocketbase.vaadin.LazyImageItem;
-import io.rocketbase.vaadin.List.LazyImageList;
-import io.rocketbase.vaadin.List.LazyImageListItem;
+import io.rocketbase.vaadin.Paging.LazyImagePaging;
+import io.rocketbase.vaadin.Paging.LazyImagePagingItem;
+import io.rocketbase.vaadin.events.LazyImageLoadedEvent;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Route
+@Slf4j
 public class MainView extends HorizontalLayout {
 
 
@@ -37,26 +40,44 @@ public class MainView extends HorizontalLayout {
 
         }
 
-        LazyImageListItem build = new LazyImageListItem(imageItemList, 10);
-        LazyImageList list = new LazyImageList(build);
+//        LazyImageListItem build = new LazyImageListItem(imageItemList, 10);
+//        LazyImageList list = new LazyImageList(build);
 
-//        LazyImagePagingItem build2 = new LazyImagePagingItem(10, 20, 5, imageItemList);
-//        LazyImagePaging paging = new LazyImagePaging(build2);
+        LazyImagePagingItem build2 = new LazyImagePagingItem(10, 20, 5, imageItemList);
+        LazyImagePaging paging = new LazyImagePaging(build2);
 
-        add(list.getContent());
+        add(paging.getContent());
+
+//        click.addClickListener((listener) -> {
+//            list.enableSelectionMode();
+//        });
+//
+//        click1.addClickListener((listener) -> {
+//            list.disableSelectionMode();
+//        });
+//
+//        click2.addClickListener((listener) -> {
+//            list.getSelectedAndDisable().forEach(item -> {
+//                System.out.println(item.getId());
+//            });
+//        });
 
         click.addClickListener((listener) -> {
-            list.enableSelectionMode();
+            paging.enableSelectionMode();
         });
 
         click1.addClickListener((listener) -> {
-            list.disableSelectionMode();
+            paging.disableSelectionMode();
         });
 
         click2.addClickListener((listener) -> {
-            list.getSelectedAndDisable().forEach(item -> {
+            paging.getSelectedAndDisable().forEach(item -> {
                 System.out.println(item.getId());
             });
+        });
+
+        paging.addLoadMore(listener -> {
+            log.info(String.valueOf(((LazyImageLoadedEvent) listener).getSource().getPaging().getCurrentPage()));
         });
     }
 }

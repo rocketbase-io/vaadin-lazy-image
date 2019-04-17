@@ -9,6 +9,7 @@ import io.rocketbase.vaadin.events.LoadMoreItemsEvent;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.Optional;
 
 public class LazyImagePaging extends AbstractLazyImageSelector {
 
@@ -67,5 +68,13 @@ public class LazyImagePaging extends AbstractLazyImageSelector {
     public void setNewLazyImageList(List<LazyImage> lazyImageList, Integer offset) {
         this.lazyImageList = lazyImageList;
         this.pagingItem.getPaging().setOffset(offset);
+    }
+
+    public Optional<LazyImage> getLoadMoreItem() {
+        return lazyImageList.stream().filter(i -> i.getImageItem().getPlaceholder()).findFirst();
+    }
+
+    public void addLoadMore(ComponentEventListener listener) {
+        lazyImageList.stream().filter(i -> i.getImageItem().getPlaceholder()).findFirst().get().addLazyImageLoadedListener(listener);
     }
 }
