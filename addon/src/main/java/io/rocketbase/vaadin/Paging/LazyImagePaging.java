@@ -32,22 +32,12 @@ public class LazyImagePaging extends AbstractLazyImageSelector {
 
 
     private void addLoadMoreListener(LazyImage item) {
-        item.addLoadMoreItemsListener(new ComponentEventListener<LoadMoreItemsEvent>() {
-            @Override
-            public void onComponentEvent(LoadMoreItemsEvent loadMoreItemsEvent) {
-                loadMore(loadMoreItemsEvent);
-            }
-        });
+        item.addLoadMoreItemsListener((ComponentEventListener<LoadMoreItemsEvent>) loadMoreItemsEvent -> loadMore(loadMoreItemsEvent));
     }
 
     @Override
     protected void addListener(LazyImage item) {
-        item.addLoadMoreItemsListener(new ComponentEventListener<LoadMoreItemsEvent>() {
-            @Override
-            public void onComponentEvent(LoadMoreItemsEvent loadMoreItemsEvent) {
-                loadMore(loadMoreItemsEvent);
-            }
-        });
+        item.addLoadMoreItemsListener((ComponentEventListener<LoadMoreItemsEvent>) loadMoreItemsEvent -> loadMore(loadMoreItemsEvent));
     }
 
 

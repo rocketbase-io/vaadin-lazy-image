@@ -1,5 +1,5 @@
 package io.rocketbase.vaadin;
 
-public enum  SelectAction {
+public enum SelectAction {
     ADD, REMOVE, RESET
 }

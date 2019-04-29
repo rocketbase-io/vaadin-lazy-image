@@ -5,12 +5,11 @@ import com.vaadin.flow.component.html.Div;
 import io.rocketbase.vaadin.events.LazyImageSelectedEvent;
 import lombok.Getter;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class AbstractLazyImageSelector {
-
 
     @Getter
     protected Div content;
@@ -56,22 +55,19 @@ public abstract class AbstractLazyImageSelector {
     }
 
     protected void addSelectionListener(LazyImage item) {
-        item.addLazyImageSelectedEvent(new ComponentEventListener<LazyImageSelectedEvent>() {
-            @Override
-            public void onComponentEvent(LazyImageSelectedEvent lazyImageSelectedEvent) {
+        item.addLazyImageSelectedEvent((ComponentEventListener<LazyImageSelectedEvent>) lazyImageSelectedEvent -> {
 
-                LazyImageItem image = lazyImageSelectedEvent.getImageItemList();
-                SelectAction action = lazyImageSelectedEvent.getAction();
+            LazyImageItem image = lazyImageSelectedEvent.getImageItemList();
+            SelectAction action = lazyImageSelectedEvent.getAction();
 
-                if (action.equals(action.ADD)) {
-                    addToSelectedList(image);
-                } else if (action.equals(SelectAction.REMOVE)) {
-                    removeFromSelectedList(image);
-                } else if (action.equals(SelectAction.RESET)) {
-                    resetSelectedList();
-                }
-
+            if (action.equals(SelectAction.ADD)) {
+                addToSelectedList(image);
+            } else if (action.equals(SelectAction.REMOVE)) {
+                removeFromSelectedList(image);
+            } else if (action.equals(SelectAction.RESET)) {
+                resetSelectedList();
             }
+
         });
     }
 
@@ -81,20 +77,9 @@ public abstract class AbstractLazyImageSelector {
         }
     }
 
-    public List<LazyImageItem> getSelectedAndDisable() {
-        List<LazyImageItem> tmp = this.selectedLazyImageList;
-        disableSelectionMode();
-        if (tmp.size() > 0) {
-            return tmp;
-        } else {
-            return new ArrayList<>();
-        }
+    public List<LazyImageItem> getSelected() {
+        return this.selectedLazyImageList != null ? this.selectedLazyImageList : Collections.emptyList();
     }
 
     protected abstract void addListener(LazyImage item);
-
-    @PostConstruct
-    public void init() {
-        content.setWidthFull();
-    }
 }

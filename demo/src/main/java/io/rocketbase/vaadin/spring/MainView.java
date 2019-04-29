@@ -1,6 +1,8 @@
 package io.rocketbase.vaadin.spring;
 
+import com.google.common.base.Joiner;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -14,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Route
 @Slf4j
@@ -35,39 +38,16 @@ public class MainView extends VerticalLayout {
 
 
         List<LazyImageItem> imageItemList = new ArrayList<>();
-        for (int i = 0; i <= 10; i++) {
+        for (int i = 0; i < 50; i++) {
             LazyImageItem build = LazyImageItem.builder().dataSrc("https://picsum.photos/id/" + (((int) (Math.random() * 100) + 1) + "/800/800")).selectable(true).build();
             imageItemList.add(build);
 
         }
-        /*
-        normal list
-         */
-
-//        LazyImageList list = new LazyImageList(new LazyImageListItem(imageItemList, 10));
-//
-//
-//        add(buttonGroup, list.getContent());
-//
-//        click.addClickListener((listener) -> {
-//            list.enableSelectionMode();
-//        });
-//
-//        click1.addClickListener((listener) -> {
-//            list.disableSelectionMode();
-//        });
-//
-//        click2.addClickListener((listener) -> {
-//            list.getSelectedAndDisable().forEach(item -> {
-//                System.out.println(item.getId());
-//            });
-//        });
-
 
         /*
         Paging
          */
-        LazyImagePagingItem pagingItem = new LazyImagePagingItem(10, 20, 5, imageItemList);
+        LazyImagePagingItem pagingItem = new LazyImagePagingItem(10, 0, 1, imageItemList);
         LazyImagePaging paging = new LazyImagePaging(pagingItem);
         add(buttonGroup, paging.getContent());
 
@@ -80,9 +60,7 @@ public class MainView extends VerticalLayout {
         });
 
         click2.addClickListener((listener) -> {
-            paging.getSelectedAndDisable().forEach(item -> {
-                System.out.println(item.getId());
-            });
+            Notification.show(Joiner.on(", ").join(paging.getSelected().stream().map(LazyImageItem::getId).collect(Collectors.toList())));
         });
 
         paging.addLoadMore(listener -> {

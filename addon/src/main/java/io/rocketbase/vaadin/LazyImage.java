@@ -24,6 +24,8 @@ import java.util.UUID;
 @JavaScript("bower_components/lazysizes/lazysizes.js")
 public class LazyImage extends PolymerTemplate<LazyImageModel> implements HasStyle, HasSize, HasElement {
 
+    public static String EMPTY_IMAGE = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+
     private static final PropertyDescriptor<String, String> dataSrcProperty = PropertyDescriptors.propertyWithDefault("dataSrc", "");
     private static final PropertyDescriptor<String, String> dataSizesProperts = PropertyDescriptors.propertyWithDefault("sizes", "auto");
     private static final PropertyDescriptor<String, String> dataSrcSetProperty = PropertyDescriptors.propertyWithDefault("srcset", "");

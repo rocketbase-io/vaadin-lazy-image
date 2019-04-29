@@ -18,7 +18,6 @@ public class LazyImageListItem {
     private int limit;
     private List<LazyImageItem> lazyImageItemList;
 
-
     public LazyImageListItem(List<LazyImageItem> lazyImageItemList, int limit) {
         this.limit = limit;
         this.lazyImageItemList = lazyImageItemList;
@@ -26,14 +25,12 @@ public class LazyImageListItem {
         init();
     }
 
-
     private void init() {
-
         for (int i = limit + 1; i <= this.lazyImageItemList.size() - 1; i = i + limit + 1) {
             this.lazyImageItemList.add(i,
                     LazyImageItem
                             .builder()
-                            .dataSrc("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=")
+                            .dataSrc(LazyImage.EMPTY_IMAGE)
                             .placeholder(true)
                             .selectable(false)
                             .build()

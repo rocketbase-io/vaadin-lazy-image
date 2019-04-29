@@ -16,26 +16,21 @@ public class LazyImagePagingItem {
     private Paging paging;
     private List<LazyImageItem> lazyImageItemList;
 
-
     public LazyImagePagingItem(Integer limit, Integer offset, Integer currentPage, List<LazyImageItem> lazyImageItemList) {
         this.paging = new Paging(limit, offset, currentPage);
         this.lazyImageItemList = lazyImageItemList;
         init();
     }
 
-
     private void init() {
-
         this.lazyImageItemList.add(this.paging.limit,
                 LazyImageItem
                         .builder()
-                        .dataSrc("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=")
+                        .dataSrc(LazyImage.EMPTY_IMAGE)
                         .placeholder(true)
                         .selectable(false)
                         .build()
         );
-
-
     }
 
     public List<LazyImage> convertToLazyImage() {

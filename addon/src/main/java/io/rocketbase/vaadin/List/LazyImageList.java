@@ -5,14 +5,10 @@ import com.vaadin.flow.component.ComponentEventListener;
 import io.rocketbase.vaadin.AbstractLazyImageSelector;
 import io.rocketbase.vaadin.LazyImage;
 import io.rocketbase.vaadin.events.LoadMoreItemsEvent;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class LazyImageList extends AbstractLazyImageSelector {
 
-
     protected LazyImageListItem listItem;
-
 
     public LazyImageList(LazyImageListItem listItem) {
         super();
