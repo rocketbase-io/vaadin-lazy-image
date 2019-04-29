@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.rocketbase.vaadin</groupId>
-    <artifactId>vaadin-stretchy-navigation-root</artifactId>
+    <artifactId>vaadin-lazy-image-root</artifactId>
     <version>1.0.1-SNAPSHOT</version>
 
     <properties>
@@ -29,9 +30,9 @@
     </modules>
 
     <scm>
-        <connection>scm:git:git@github.com:rocketbase-io/vaadin-croppie.git</connection>
-        <developerConnection>scm:git:git@github.com:rocketbase-io/vaadin-croppie.git</developerConnection>
-        <url>https://github.com/rocketbase-io/vaadin-croppie.git</url>
+        <connection>scm:git:git@github.com:rocketbase-io/vaadin-lazy-image.git</connection>
+        <developerConnection>scm:git:git@github.com:rocketbase-io/vaadin-lazy-image.git</developerConnection>
+        <url>https://github.com/rocketbase-io/vaadin-lazy-image.git</url>
         <tag>HEAD</tag>
     </scm>
 

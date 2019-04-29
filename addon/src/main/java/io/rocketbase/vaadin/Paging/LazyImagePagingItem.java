@@ -20,7 +20,6 @@ public class LazyImagePagingItem {
     public LazyImagePagingItem(Integer limit, Integer offset, Integer currentPage, List<LazyImageItem> lazyImageItemList) {
         this.paging = new Paging(limit, offset, currentPage);
         this.lazyImageItemList = lazyImageItemList;
-
         init();
     }
 

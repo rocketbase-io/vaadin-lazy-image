@@ -3,7 +3,6 @@ package io.rocketbase.vaadin;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.html.Div;
 import io.rocketbase.vaadin.events.LazyImageSelectedEvent;
-import io.rocketbase.vaadin.events.LoadMoreItemsEvent;
 import lombok.Getter;
 
 import javax.annotation.PostConstruct;
@@ -17,15 +16,19 @@ public abstract class AbstractLazyImageSelector {
     protected Div content;
 
     protected List<LazyImage> lazyImageList;
-
-
     private List<LazyImageItem> selectedLazyImageList;
+
+    public AbstractLazyImageSelector() {
+        this.content = new Div();
+    }
 
     public void enableSelectionMode() {
         this.selectedLazyImageList = new ArrayList<>();
-        lazyImageList.forEach((image) -> {
-            image.setSelectable(image.getImageItem().getSelectable());
-        });
+        if (lazyImageList != null) {
+            lazyImageList.forEach((image) -> {
+                image.setSelectable(image.getImageItem().getSelectable());
+            });
+        }
     }
 
     public void disableSelectionMode() {
@@ -52,7 +55,7 @@ public abstract class AbstractLazyImageSelector {
         addSelectionListener(item);
     }
 
-    private void addSelectionListener(LazyImage item) {
+    protected void addSelectionListener(LazyImage item) {
         item.addLazyImageSelectedEvent(new ComponentEventListener<LazyImageSelectedEvent>() {
             @Override
             public void onComponentEvent(LazyImageSelectedEvent lazyImageSelectedEvent) {

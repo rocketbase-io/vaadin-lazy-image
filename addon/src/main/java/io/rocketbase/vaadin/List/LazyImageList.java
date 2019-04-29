@@ -2,7 +2,6 @@ package io.rocketbase.vaadin.List;
 
 
 import com.vaadin.flow.component.ComponentEventListener;
-import com.vaadin.flow.component.html.Div;
 import io.rocketbase.vaadin.AbstractLazyImageSelector;
 import io.rocketbase.vaadin.LazyImage;
 import io.rocketbase.vaadin.events.LoadMoreItemsEvent;
@@ -12,11 +11,12 @@ import lombok.extern.slf4j.Slf4j;
 public class LazyImageList extends AbstractLazyImageSelector {
 
 
-    private LazyImageListItem listItem;
+    protected LazyImageListItem listItem;
 
 
     public LazyImageList(LazyImageListItem listItem) {
-        this.content = new Div();
+        super();
+
         this.listItem = listItem;
         this.lazyImageList = listItem.convertToLazyImage();
 
