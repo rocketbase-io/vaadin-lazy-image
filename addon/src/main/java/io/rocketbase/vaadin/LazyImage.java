@@ -6,13 +6,11 @@ import com.vaadin.flow.component.dependency.JavaScript;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.shared.Registration;
-import io.rocketbase.vaadin.Paging.LazyImagePagingItem;
 import io.rocketbase.vaadin.events.LazyImageClickEvent;
 import io.rocketbase.vaadin.events.LazyImageLoadedEvent;
 import io.rocketbase.vaadin.events.LazyImageSelectedEvent;
 import io.rocketbase.vaadin.events.LoadMoreItemsEvent;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.UUID;
@@ -24,39 +22,29 @@ import java.util.UUID;
 @JavaScript("bower_components/lazysizes/lazysizes.js")
 public class LazyImage extends PolymerTemplate<LazyImageModel> implements HasStyle, HasSize, HasElement {
 
-    public static String EMPTY_IMAGE = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
-
     private static final PropertyDescriptor<String, String> dataSrcProperty = PropertyDescriptors.propertyWithDefault("dataSrc", "");
     private static final PropertyDescriptor<String, String> dataSizesProperts = PropertyDescriptors.propertyWithDefault("sizes", "auto");
     private static final PropertyDescriptor<String, String> dataSrcSetProperty = PropertyDescriptors.propertyWithDefault("srcset", "");
     private static final PropertyDescriptor<String, String> idProperty = PropertyDescriptors.propertyWithDefault("id", "");
     private static final PropertyDescriptor<String, String> placeholderProperty = PropertyDescriptors.propertyWithDefault("placeholder", "false");
-
+    public static String EMPTY_IMAGE = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
     @Getter
     private LazyImageItem imageItem;
-
-    @Setter
-    @Getter
-    private LazyImagePagingItem.Paging paging;
 
 
     public LazyImage(LazyImageItem img) {
         super();
-        if (img.getId() == null) {
-            String id = UUID.randomUUID().toString();
-            img.setId(id);
+        String id = UUID.randomUUID().toString();
+        img.setId(id);
 
-            if (img.getPlaceholder() != null && img.getPlaceholder()) {
-                setPlaceholder("true");
-                this.getElement().setAttribute("placeholder", true);
-            } else {
-                img.setPlaceholder(false);
-                setPlaceholder("false");
-            }
-        } else if (img.getPlaceholder()) {
+        if (img.getPlaceholder() != null && img.getPlaceholder()) {
             setPlaceholder("true");
             this.getElement().setAttribute("placeholder", true);
+        } else {
+            img.setPlaceholder(false);
+            setPlaceholder("false");
         }
+
         setSrc(img.getDataSrc());
         setSizes(img.getDataSizes());
         setSrcSet(img.getDataSrcSet());
@@ -130,13 +118,7 @@ public class LazyImage extends PolymerTemplate<LazyImageModel> implements HasSty
 
     @ClientCallable
     private void placeholderLoaded() {
-        if (this.paging != null) {
-            fireEvent(new LoadMoreItemsEvent(this, true, this.imageItem, this.paging));
-
-        } else {
-            fireEvent(new LoadMoreItemsEvent(this, true, this.imageItem));
-
-        }
+        fireEvent(new LoadMoreItemsEvent(this, true, this.imageItem));
     }
 
 

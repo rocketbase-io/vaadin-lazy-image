@@ -84,6 +84,11 @@
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-icons-flow</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>27.1-jre</version>
+        </dependency>
 
     </dependencies>
 

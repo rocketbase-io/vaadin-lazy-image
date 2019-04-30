@@ -6,11 +6,9 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import io.rocketbase.vaadin.LazyImage;
 import io.rocketbase.vaadin.LazyImageItem;
-import io.rocketbase.vaadin.Paging.LazyImagePaging;
-import io.rocketbase.vaadin.Paging.LazyImagePagingItem;
-import io.rocketbase.vaadin.events.LazyImageLoadedEvent;
+import io.rocketbase.vaadin.LazyImageList;
+import io.rocketbase.vaadin.LazyLoadingPaging;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -33,38 +31,45 @@ public class MainView extends VerticalLayout {
         buttonGroup.add(click, click1, click2);
 
 
-        LazyImage lazyImage1 = new LazyImage(LazyImageItem.builder().dataSizes("auto").dataSrc("https://picsum.photos/300").selectable(false).build());
-        lazyImageLayout.add(lazyImage1);
-
-
+        /*
+        Generates a list of images
+         */
         List<LazyImageItem> imageItemList = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 55; i++) {
             LazyImageItem build = LazyImageItem.builder().dataSrc("https://picsum.photos/id/" + (((int) (Math.random() * 100) + 1) + "/800/800")).selectable(true).build();
             imageItemList.add(build);
-
         }
 
-        /*
-        Paging
-         */
-        LazyImagePagingItem pagingItem = new LazyImagePagingItem(10, 0, 1, imageItemList);
-        LazyImagePaging paging = new LazyImagePaging(pagingItem);
-        add(buttonGroup, paging.getContent());
+        LazyImageList list = new LazyImageList(new LazyLoadingPaging() {
+            @Override
+            public int count() {
+                return 25;
+            }
 
-        click.addClickListener((listener) -> {
-            paging.enableSelectionMode();
+            @Override
+            public List<LazyImageItem> load(int page, int pageSize) {
+                return imageItemList.subList(page, page + pageSize);
+            }
+        }, 10);
+
+
+        list.setStyleForEachImage("min-height", "800px");
+
+
+        add(buttonGroup, list.getContent());
+
+        click.addClickListener((loadMoreEventListener) -> {
+            list.enableSelectionMode();
         });
 
-        click1.addClickListener((listener) -> {
-            paging.disableSelectionMode();
+        click1.addClickListener((loadMoreEventListener) -> {
+            list.disableSelectionMode();
         });
 
-        click2.addClickListener((listener) -> {
-            Notification.show(Joiner.on(", ").join(paging.getSelected().stream().map(LazyImageItem::getId).collect(Collectors.toList())));
+        click2.addClickListener((loadMoreEventListener) -> {
+            Notification.show(Joiner.on(", ").join(list.getSelected().stream().map(LazyImageItem::getId).collect(Collectors.toList())));
         });
 
-        paging.addLoadMore(listener -> {
-            log.info(String.valueOf(((LazyImageLoadedEvent) listener).getSource().getPaging().getCurrentPage()));
-        });
+
     }
 }

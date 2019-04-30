@@ -64,8 +64,8 @@
 
 
             _classChanged(newVal, oldVal) {
-                if (typeof newVal !== 'undefined') {
-                    if (this.img.placeholder === true && newVal.indexOf('lazyloading lazyloaded') !== -1) {
+                if (typeof newVal !== 'undefined' && typeof oldVal !== 'undefined') {
+                    if (this.img.placeholder === true && newVal == 'lazyloading lazyloaded') {
                         this.$server.placeholderLoaded()
                     }
                 }
